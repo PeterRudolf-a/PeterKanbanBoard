@@ -1,14 +1,13 @@
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { useLocation } from 'react-router-dom';
 
 class AuthService {
   getProfile() {
     // TODO: return the decoded token
     const token = this.getToken();
     if (!token) {
-      return null;
+      return null; // Return null if there is no token
     }
-    return jwtDecode<JwtPayload>(token);
+    return jwtDecode<JwtPayload>(token); // Return the decoded token
   }
 
   loggedIn() {
@@ -21,9 +20,9 @@ class AuthService {
     // TODO: return a value that indicates if the token is expired
     const decoded = jwtDecode<JwtPayload>(token);
     if (!decoded.exp) {
-      return false;
+      return false; // Return false if there is no expiration date
     } else {
-      return decoded.exp < Date.now() / 1000;
+      return decoded.exp < Date.now() / 1000; // Return true if the token is expired
     }
   }
 
@@ -37,14 +36,14 @@ class AuthService {
     const token = idToken;
     localStorage.setItem('id_token', token);
     // TODO: redirect to the home page
-    
+    window.location.assign('/');
   }
 
   logout() {
     // TODO: remove the token from localStorage
     localStorage.removeItem('id_token');
     // TODO: redirect to the login page
-    
+    window.location.assign('/login');
   }
 }
 

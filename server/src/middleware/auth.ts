@@ -1,40 +1,48 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express'; // import the necessary types from express
+import jwt from 'jsonwebtoken'; // import jwt from 'jsonwebtoken'
 
+// Extend the Request interface to include a user property
 declare module 'express-serve-static-core' {
   interface Request {
     user?: JwtPayload;
   }
 }
-import jwt from 'jsonwebtoken';
 
+// Define the JwtPayload interface
 interface JwtPayload {
   username: string;
 }
 
+// Get the secret from the environment
 const secret = process.env.ACCESS_TOKEN_SECRET as string;
 if (!secret) {
-  throw new Error('ACCESS_TOKEN_SECRET is not defined');
+  throw new Error('ACCESS_TOKEN_SECRET is not defined'); // Throw an error if the secret is not defined
 }
 
+// Define a type guard for the JwtPayload interface
 const isJwtPayload = (decoded: any): decoded is JwtPayload => {
   return decoded && typeof decoded.username === 'string';
 };
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   // TODO: verify the token exists and add the user data to the request object
-  const authHeader = req.headers['authorization'];
-  const token = authHeader?.split(' ')[1];
-  if (token == null) return res.sendStatus(401);
-  jwt.verify(token, secret, (err, decoded) => {
-    if (err || !decoded || typeof decoded !== 'object' || !('username' in decoded)) {
-      return res.sendStatus(403);
-    }
-    if (isJwtPayload(decoded)) {
-      req.user = decoded;
-      next();
-    } else {
-      res.sendStatus(403);
-    }
-    next();
-  });
+  const authHeader = req.headers.authorization; // Get the authorization header from the request
+  if (authHeader) {
+    const token = authHeader.split(' ')[1]; // Get the token from the authorization header
+    
+    jwt.verify(token, secret, (err, user: any) => {
+      if (err) {
+        return res.sendStatus(403); // Return a 403 Forbidden status if there is an error
+      }
+      if (isJwtPayload(user)) {
+        req.user = user; // Add the user data to the request object if it is valid
+        return next(); // Call the next middleware function
+      } else {
+        return res.sendStatus(403); // Return a 403 Forbidden status if the user data is invalid
+      }
+    });
+  } else {
+    return res.sendStatus(401); // Return a 401 Unauthorized status if there is no authorization header
+  }
+  return; // Ensure all code paths return a value
 };
