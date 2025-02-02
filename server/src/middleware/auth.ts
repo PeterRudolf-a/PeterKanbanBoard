@@ -13,12 +13,6 @@ interface JwtPayload {
   username: string;
 }
 
-// Get the secret from the environment
-const secret = process.env.ACCESS_TOKEN_SECRET as string;
-if (!secret) {
-  throw new Error('ACCESS_TOKEN_SECRET is not defined'); // Throw an error if the secret is not defined
-}
-
 // Define a type guard for the JwtPayload interface
 const isJwtPayload = (decoded: any): decoded is JwtPayload => {
   return decoded && typeof decoded.username === 'string';
@@ -29,6 +23,8 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   const authHeader = req.headers.authorization; // Get the authorization header from the request
   if (authHeader) {
     const token = authHeader.split(' ')[1]; // Get the token from the authorization header
+
+    const secret = process.env.ACCESS_TOKEN_SECRET || ''; // Get the secret key from the environment
     
     jwt.verify(token, secret, (err, user: any) => {
       if (err) {

@@ -3,12 +3,6 @@ import { User } from '../models/user.js'; // Import the User model
 import jwt from 'jsonwebtoken'; // Import jwt from jsonwebtoken
 import bcrypt from 'bcrypt'; // Import bcrypt
 
-// Get the secret from the environment
-const secret = process.env.ACCESS_TOKEN_SECRET;
-if (!secret) {
-  throw new Error('ACCESS_TOKEN_SECRET is not defined'); // Throw an error if the secret is not defined
-}
-
 export const login = async (req: Request, res: Response) => {
   // TODO: If the user exists and the password is correct, return a JWT token
   const { username, password } = req.body; // Get the username and password from the request body
