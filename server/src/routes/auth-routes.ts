@@ -11,20 +11,21 @@ export const login = async (req: Request, res: Response) => {
   });
 
   if (!user) {
-    return res.status(404).send('User not found'); // Return a 404 Not Found status if the user is not found
+    return res.status(404).json({ error: 'User not found' }) // Return a 404 Not Found status if the user is not found
   }
 
   // Check if the password is valid
   const passwordIsValid = await bcrypt.compare(password, user.password);
 
   if (!passwordIsValid) {
-    return res.status(401).send('Invalid password'); // Return a 401 Unauthorized status if the password is invalid
+    return res.status(401).json({ error: 'Invalid password' }); // Return a 401 Unauthorized status if the password is invalid
   }
   // Create a JWT token
   const secretKey = process.env.ACCESS_TOKEN_SECRET || '';
+  console.log('Secret Key: ', secretKey);
 
   // Sign the token with the user's username
-  const token = jwt.sign({ username: user.username }, secretKey);
+  const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1h' });
   return res.json({ token }); // Return the token
 };
 

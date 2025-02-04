@@ -4,24 +4,24 @@ const login = async (userInfo: UserLogin) => {
   // TODO: make a POST request to the login route
   try {
     // fetch the login route with the user info
-    const response = await fetch("/api/auth/login", {
+    const response = await fetch("/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userInfo),
     });
-    // check if the response is ok
-    const data = await response.json();
+
     // if the response is not ok, throw an error
     if (!response.ok) {
-      throw new Error("Invalid API response, check network tab");
+      throw new Error("User information not retrieved, check network tab");
     }
     // return the data
-    return data;
+    return await response.json();
     // catch any errors and log them to the console
   } catch (error) {
-    console.error("Error:", error);
+    console.log('Error from user login: ', error);
+    return Promise.reject('Cound not fetch user information');
   }
 }
 
