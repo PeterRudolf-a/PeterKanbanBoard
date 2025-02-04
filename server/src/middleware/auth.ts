@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express'; // import the necessa
 import jwt from 'jsonwebtoken'; // import jwt from 'jsonwebtoken'
 
 // Extend the Request interface to include a user property
-/*declare module 'express-serve-static-core' {
+declare module 'express-serve-static-core' {
   interface Request {
     user?: JwtPayload;
   }
-}*/
+}
 
 // Define the JwtPayload interface
 interface JwtPayload {
@@ -14,9 +14,9 @@ interface JwtPayload {
 }
 
 // Define a type guard for the JwtPayload interface
-/*const isJwtPayload = (decoded: any): decoded is JwtPayload => {
+const isJwtPayload = (decoded: any): decoded is JwtPayload => {
   return decoded && typeof decoded.username === 'string';
-};*/
+};
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   // TODO: verify the token exists and add the user data to the request object
@@ -28,7 +28,11 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     
     jwt.verify(token, secret, (err, user: any) => {
       if (err) {
+        console.error('Error verifying token:', err);
         return res.sendStatus(403); // Return a 403 Forbidden status if there is an error
+      }
+      if (!isJwtPayload(user)) {
+        return res.sendStatus(403); // Return a 403 Forbidden status if the user data is not valid
       }
       req.user = user as JwtPayload; // Add the user data to the request object if it is valid
       return next(); // Call the next middleware function

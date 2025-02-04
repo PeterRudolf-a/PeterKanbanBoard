@@ -1,37 +1,38 @@
-import { Router, Request, Response } from 'express'; // Import the necessary types from express
-import { User } from '../models/user.js'; // Import the User model
-import jwt from 'jsonwebtoken'; // Import jwt from jsonwebtoken
-import bcrypt from 'bcrypt'; // Import bcrypt
+import { Router, Request, Response } from "express"; // Import the necessary types from express
+import { User } from "../models/user.js"; // Import the User model
+import jwt from "jsonwebtoken"; // Import jwt from jsonwebtoken
+import bcrypt from "bcrypt"; // Import bcrypt
 
 export const login = async (req: Request, res: Response) => {
   // TODO: If the user exists and the password is correct, return a JWT token
-  const { username, password } = req.body; // Get the username and password from the request body
-  const user = await User.findOne({ 
-    where: { username: username } // Find the user by username
-  });
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ where: { username: username } });
 
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' }) // Return a 404 Not Found status if the user is not found
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const passwordIsValid = await bcrypt.compare(password, user.password);
+
+    if (!passwordIsValid) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    const secretKey = process.env.ACCESS_TOKEN_SECRET || "";
+    const token = jwt.sign({ username: user.username }, secretKey, {
+      expiresIn: "1h",
+    });
+    return res.json({ token });
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  // Check if the password is valid
-  const passwordIsValid = await bcrypt.compare(password, user.password);
-
-  if (!passwordIsValid) {
-    return res.status(401).json({ error: 'Invalid password' }); // Return a 401 Unauthorized status if the password is invalid
-  }
-  // Create a JWT token
-  const secretKey = process.env.ACCESS_TOKEN_SECRET || '';
-  console.log('Secret Key: ', secretKey);
-
-  // Sign the token with the user's username
-  const token = jwt.sign({ username: user.username }, secretKey, { expiresIn: '1h' });
-  return res.json({ token }); // Return the token
 };
 
 const router = Router();
 
 // POST /login - Login a user
-router.post('/login', login);
+router.post("/login", login);
 
 export default router;
