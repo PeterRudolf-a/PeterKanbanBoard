@@ -11,7 +11,6 @@ https://peterkanbanboard.onrender.com
 - [Credits](#credits)
 - [Screenshot](#screenshot)
 - [Testing](#testing)
-- [Issues](#issues)
 - [Questions](#questions)
   
 ## License
@@ -37,9 +36,6 @@ Seeded users you can use to login and test the application:
  { username: 'JollyGuru', password: 'password' },
  { username: 'SunnyScribe', password: 'password' },
  { username: 'RadiantComet', password: 'password' },
-
-## Issues
-Logging out causes a error page on Render, but works locally.
 
 ## Questions
   Link to my GitHub profile: https://github.com/PeterRudolf-a.
