@@ -27,29 +27,27 @@ class AuthService {
   }
 
   getToken(): string {
-    // TODO: return the token
+    // retrieves the user token from localStorage
     return localStorage.getItem("id_token") || "";
   }
 
   login(idToken: string) {
-    // TODO: set the token to localStorage
+    // save the user token in localStorage
     const token = idToken;
     localStorage.setItem("id_token", token);
-    // TODO: redirect to the home page
+    // redirect to the home route
     window.location.assign("/");
   }
 
   logout() {
-    // TODO: remove the token from localStorage
     localStorage.removeItem("id_token");
-    // TODO: redirect to the login page
     // Check if the application is running in production or development
     const isProduction =
       window.location.hostname === "peterkanbanboard.onrender.com";
 
     // Redirect to the appropriate login page based on the environment
     if (isProduction) {
-      window.location.assign("https://peterkanbanboard.onrender.com/login"); // Now this should work
+      window.location.assign("https://peterkanbanboard.onrender.com/login"); // Production redirection
     } else {
       window.location.assign("/login"); // Local redirection
     }
