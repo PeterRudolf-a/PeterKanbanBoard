@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express"; // Import the necessary typ
 import { User } from "../models/user.js"; // Import the User model
 import jwt from "jsonwebtoken"; // Import jwt from jsonwebtoken
 import bcrypt from "bcrypt"; // Import bcrypt
+import path from "path"; // Import path
 
 export const login = async (req: Request, res: Response) => {
   // TODO: If the user exists and the password is correct, return a JWT token
@@ -34,5 +35,10 @@ const router = Router();
 
 // POST /login - Login a user
 router.post("/login", login);
+
+// Serve the login page
+router.get("/login", (_req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 export default router;

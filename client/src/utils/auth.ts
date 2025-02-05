@@ -49,7 +49,7 @@ class AuthService {
 
     // Redirect to the appropriate login page based on the environment
     if (isProduction) {
-      window.location.assign("https://peterkanbanboard.onrender.com/auth/login");
+      window.location.assign("https://peterkanbanboard.onrender.com/login"); // Now this should work
     } else {
       window.location.assign("/login"); // Local redirection
     }
