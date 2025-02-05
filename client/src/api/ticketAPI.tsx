@@ -13,10 +13,16 @@ const retrieveTickets = async () => {
         }
       }
     );
-    const data = await response.json();
+    let data;
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      throw new Error(`Unexpected response: ${text}`);
+    }
 
-    if(!response.ok) {
-      throw new Error('invalid API response, check network tab!');
+    if (!response.ok) {
+      throw new Error('Invalid API response, check network tab!');
     }
 
     return data;
