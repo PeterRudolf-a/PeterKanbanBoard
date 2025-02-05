@@ -41,7 +41,7 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("id_token");
-    // Check if the application is running in production or development
+    /*// Check if the application is running in production or development
     const isProduction =
       window.location.hostname === "peterkanbanboard.onrender.com";
 
@@ -50,7 +50,8 @@ class AuthService {
       window.location.assign("https://peterkanbanboard.onrender.com/login"); // Production redirection
     } else {
       window.location.assign("/login"); // Local redirection
-    }
+    }*/
+   window.location.assign("/");
   }
 }
 
