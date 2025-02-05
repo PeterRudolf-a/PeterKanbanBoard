@@ -10,6 +10,7 @@ https://peterkanbanboard.onrender.com
 - [License](#license)
 - [Credits](#credits)
 - [Screenshot](#screenshot)
+- [Testing](#testing)
 - [Questions](#questions)
   
 ## License
@@ -29,6 +30,12 @@ Original code from starter code files: https://bootcampspot.instructure.com/cour
 ![changed edit and delete](https://github.com/user-attachments/assets/205f51da-b968-4363-8068-e475506200fa)
 ![create ticket](https://github.com/user-attachments/assets/aeb993b1-4895-47f7-b2bb-b4df55d7480d)
 ![added ticket](https://github.com/user-attachments/assets/a7ce7d2e-46bb-4188-8ce0-6630faf180fa)
+
+## Testing
+Seeded users you can use to login and test the application:
+ { username: 'JollyGuru', password: 'password' },
+ { username: 'SunnyScribe', password: 'password' },
+ { username: 'RadiantComet', password: 'password' },
 
 ## Questions
   Link to my GitHub profile: https://github.com/PeterRudolf-a.
