@@ -41,17 +41,17 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("id_token");
-    /*// Check if the application is running in production or development
-    const isProduction =
+    // Check if the application is running in production or development
+    /*const isProduction =
       window.location.hostname === "peterkanbanboard.onrender.com";
-
+      */
     // Redirect to the appropriate login page based on the environment
-    if (isProduction) {
-      window.location.assign("https://peterkanbanboard.onrender.com/login"); // Production redirection
+    /*if (isProduction) {
+      window.location.assign("https://peterkanbanboard.onrender.com/login"); 
     } else {
-      window.location.assign("/login"); // Local redirection
+      window.location.assign("/login"); 
     }*/
-   window.location.assign("/");
+    window.location.assign("/");
   }
 }
 
